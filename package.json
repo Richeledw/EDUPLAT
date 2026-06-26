@@ -1,0 +1,35 @@
+{
+  "name": "eduplat",
+  "version": "1.0.0",
+  "description": "Plataforma de Aprendizaje en Línea - Eduplat",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "learning",
+    "platform",
+    "courses",
+    "education"
+  ],
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^6.0.0",
+    "dotenv": "^17.2.4",
+    "ejs": "^3.1.10",
+    "express": "^4.18.2",
+    "express-session": "^1.19.0",
+    "mongoose": "^9.1.6",
+    "nodemailer": "^8.0.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

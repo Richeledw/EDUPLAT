@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= datosCurso.titulo %> - Eduplat</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="/css/styles.css">
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --color-info: #06b6d4;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f9fafb;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* Header del Curso */
+        .curso-header {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            padding: 4rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .curso-header-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .curso-icon {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .curso-icon img {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .curso-info h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .curso-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .meta-item i {
+            color: var(--color-primary);
+            font-size: 1.2rem;
+        }
+
+        .calificacion {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .calificacion .stars {
+            color: #fbbf24;
+        }
+
+        /* Contenido principal */
+        .curso-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+
+        .curso-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+
+        /* Card de Descripción */
+        .card {
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.5rem;
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-weight: 600;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Botones de acción */
+        .btn-primary {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .btn-outline-secondary {
+            color: #6b7280;
+            border-color: #d1d5db;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-card h6 {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        /* Tablets y móviles */
+        @media (max-width: 768px) {
+            .curso-header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .curso-icon {
+                width: 120px;
+                height: 120px;
+            }
+
+            .curso-icon img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .curso-info h1 {
+                font-size: 1.75rem;
+            }
+
+            .curso-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .curso-meta {
+                justify-content: center;
+                gap: 1rem;
+            }
+        }
+
+        /* Sección de Cursos Relacionados */
+        .cursos-relacionados {
+            background-color: white;
+            padding: 2rem 1rem;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .cursos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .curso-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .curso-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .curso-card-img {
+            height: 200px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .curso-card-img img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .curso-card-body {
+            padding: 1.5rem;
+        }
+
+        .curso-card-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+
+        .curso-card-text {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="bg-white shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-md navbar-light container-fluid">
+            <div class="container-fluid px-lg-4">
+                <a class="navbar-brand fw-bold fs-4" href="/">
+                    <i class="fas fa-book-open text-primary me-2"></i>
+                    Eduplat
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/temas">Cursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contacto">Contacto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary text-white px-3" href="/registro">Registrarse</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Curso Header -->
+        <div class="curso-header">
+            <div class="curso-header-content">
+                <div class="curso-icon">
+                    <img src="<%= datosCurso.icono %>" alt="<%= datosCurso.titulo %>">
+                </div>
+                <div class="curso-info flex-grow-1">
+                    <h1><%= datosCurso.titulo %></h1>
+                    <p class="text-muted mb-0"><%= datosCurso.descripcion %></p>
+                    <div class="curso-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-star"></i>
+                            <span class="calificacion">
+                                <span class="stars">★★★★★</span>
+                                <%= datosCurso.calificacion %> (<%= datosCurso.resenas %> reseñas)
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-layer-group"></i>
+                            <span><%= datosCurso.nivel %></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-tag"></i>
+                            <span><%= datosCurso.categoria %></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Curso Content -->
+        <div class="curso-container">
+            <div class="curso-grid">
+                <!-- Contenido Principal -->
+                <div class="main-content">
+                    <!-- Descripción -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-book me-2"></i>Descripción del Curso</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><%= datosCurso.descripcion %></p>
+                            <p class="text-muted">
+                                Este curso te proporciona las habilidades fundamentales necesarias para dominar 
+                                <%= datosCurso.titulo.toLowerCase() %>. A través de lecciones teóricas y prácticas, 
+                                aprenderás de forma progresiva y podrás aplicar lo aprendido en proyectos reales.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Contenido del Curso -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-list-check me-2"></i>Contenido del Curso</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <% for(let i = 1; i <= 8; i++) { %>
+                                <a href="#" class="list-group-item list-group-item-action border">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">Sección <%= i %>: Tema Principal</h6>
+                                            <p class="text-muted mb-0 small">5-7 lecciones • 60-90 min</p>
+                                        </div>
+                                        <span class="badge bg-primary ms-2"><i class="fas fa-lock"></i></span>
+                                    </div>
+                                </a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Requisitos -->
+                    <div class="card mb-0">
+                        <div class="card-header">
+                            <h5><i class="fas fa-clipboard-list me-2"></i>Requisitos</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    Conocimientos básicos de computadoras
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    Editor de texto (VS Code recomendado)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    Conexión a internet estable
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    Disposición para aprender y practicar
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Card de Inscripción -->
+                    <div class="sidebar-card border-primary border-2">
+                        <button class="btn btn-primary w-100 mb-3">
+                            <i class="fas fa-play me-2"></i>
+                            Inscribirse al Curso
+                        </button>
+                        <button class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-bookmark me-2"></i>
+                            Guardar para más tarde
+                        </button>
+                    </div>
+
+                    <!-- Información del Curso -->
+                    <div class="sidebar-card">
+                        <h6><i class="fas fa-info-circle me-2"></i>Detalles</h6>
+                        <div class="info-row">
+                            <span class="info-label">Duración</span>
+                            <span class="info-value"><%= datosCurso.duracion %></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Lecciones</span>
+                            <span class="info-value"><%= datosCurso.lecciones %></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Nivel</span>
+                            <span class="info-value"><%= datosCurso.nivel %></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Categoría</span>
+                            <span class="info-value text-capitalize"><%= datosCurso.categoria %></span>
+                        </div>
+                    </div>
+
+                    <!-- Lo que aprenderás -->
+                    <div class="sidebar-card">
+                        <h6><i class="fas fa-lightbulb me-2"></i>Aprenderás</h6>
+                        <ul class="list-unstyled small">
+                            <li class="mb-2">
+                                <i class="fas fa-arrow-right text-primary me-2"></i>
+                                Conceptos fundamentales
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-arrow-right text-primary me-2"></i>
+                                Mejores prácticas
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-arrow-right text-primary me-2"></i>
+                                Proyectos prácticos
+                            </li>
+                            <li>
+                                <i class="fas fa-arrow-right text-primary me-2"></i>
+                                Certificación
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Cursos Relacionados -->
+            <% if(datosCurso.cursos_relacionados && datosCurso.cursos_relacionados.length > 0) { %>
+            <section class="cursos-relacionados">
+                <h3 class="mb-4 text-center">Cursos Relacionados</h3>
+                <div class="cursos-grid">
+                    <% datosCurso.cursos_relacionados.forEach(curso => { %>
+                    <a href="/curso/<%= curso.id %>" class="curso-card text-decoration-none text-dark">
+                        <div class="curso-card-img">
+                            <img src="<%= curso.icono %>" alt="<%= curso.titulo %>">
+                        </div>
+                        <div class="curso-card-body">
+                            <h6 class="curso-card-title"><%= curso.titulo %></h6>
+                            <p class="curso-card-text"><%= curso.duracion %> • <%= curso.nivel %></p>
+                            <div class="text-warning small">
+                                <i class="fas fa-star"></i>
+                                <span><%= curso.calificacion %></span>
+                            </div>
+                        </div>
+                    </a>
+                    <% }); %>
+                </div>
+            </section>
+            <% } %>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5">
+        <div class="container-fluid px-4 py-5">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3 text-white">Eduplat</h5>
+                    <p class="text-white-75 small">Tu plataforma de aprendizaje en línea para dominar nuevas habilidades.</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3 text-white">Enlaces Rápidos</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="/" class="text-decoration-none text-white">Inicio</a></li>
+                        <li class="mb-2"><a href="/temas" class="text-decoration-none text-white">Volver a Cursos</a></li>
+                        <li><a href="/contacto" class="text-decoration-none text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3 text-white">Contáctanos</h6>
+                    <p class="text-white-75 small mb-2">📧 info@eduplat.com</p>
+                    <p class="text-white-75 small mb-2">📞 +54 9 1234567890</p>
+                    <p class="text-white-75 small">📍 Buenos Aires, Argentina</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3 text-white">Síguenos</h6>
+                    <div class="d-flex gap-2">
+                        <a href="https://facebook.com" class="text-white" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" class="text-white" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://linkedin.com" class="text-white" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://twitter.com" class="text-white" title="Twitter/X">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-white-50">
+            <div class="text-center text-white-75 small">
+                <p>&copy; 2025 Eduplat - Plataforma de Aprendizaje. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

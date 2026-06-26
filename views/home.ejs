@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= datosHome.titulo %>
+    </title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            padding: 5rem 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .btn-hero {
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            font-size: 1.05rem;
+            border-radius: 5px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #111827;
+        }
+
+        .course-preview {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .course-preview:hover {
+            transform: translateY(-10px);
+        }
+
+        .course-preview .card {
+            height: 100%;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-preview:hover .card {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-image {
+            height: 180px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .course-image img {
+            width: 100px;
+            height: 100px;
+        }
+
+        footer {
+            background-color: #1f2937;
+            color: white;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header/Navbar -->
+    <header class="bg-white shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-md navbar-light container-fluid">
+            <div class="container-fluid px-lg-4">
+                <a class="navbar-brand fw-bold fs-4 text-primary" href="/">
+                    <i class="fas fa-book-open me-2"></i>
+                    Eduplat
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/temas">Cursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contacto">Contacto</a>
+                        </li>
+                        <% if(locals.user) { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/panel">Mi Panel</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user me-1"></i><%= user.nombre %>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="/panel"><i class="fas fa-tachometer-alt me-2"></i>Mi
+                                            Panel</a></li>
+                                    <li><a class="dropdown-item" href="/configuracion"><i class="fas fa-cog me-2"></i>Configuración</a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item text-danger" href="/logout"><i
+                                                class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                                </ul>
+                            </li>
+                            <% } else { %>
+                                <li class="nav-item">
+                                    <a class="nav-link btn btn-outline-primary me-2" href="/login">Ingresar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link btn btn-primary text-white px-3" href="/registro">Registrarse</a>
+                                </li>
+                                <% } %>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>
+                        <%= datosHome.titulo %>
+                    </h1>
+                    <p>
+                        <%= datosHome.subtitulo %>
+                    </p>
+                    <div class="mt-4">
+                        <a href="/temas" class="btn btn-light btn-hero me-3">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            Explorar Cursos
+                        </a>
+                        <a href="/registro" class="btn btn-outline-light btn-hero">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Crear Cuenta
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Courses -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="section-title">Cursos Destacados</h2>
+                <div class="row g-4">
+                    <% const cursosDestacados=[ { id: 'html' , titulo: 'HTML Básico' , icono: '/img/html5.svg' },
+                        { id: 'css' , titulo: 'CSS Esencial' , icono: '/img/css3-alt.svg' }, { id: 'javascript' ,
+                        titulo: 'JavaScript Intro' , icono: '/img/js.svg' }, { id: 'python' ,
+                        titulo: 'Python Fundamental' , icono: '/img/python.svg' }, { id: 'sql' ,
+                        titulo: 'SQL Databases' , icono: '/img/mysql.svg' }, { id: 'typescript' ,
+                        titulo: 'TypeScript Mastery' , icono: '/img/typescript.svg' } ];
+                        cursosDestacados.forEach(curso=> {
+                        %>
+                        <div class="col-md-6 col-lg-4 course-preview">
+                            <a href="/curso/<%= curso.id %>" class="text-decoration-none text-dark">
+                                <div class="card border-0">
+                                    <div class="course-image">
+                                        <img src="<%= curso.icono %>" alt="<%= curso.titulo %>">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= curso.titulo %>
+                                        </h5>
+                                        <p class="card-text text-muted">Aprende desde cero con nuestros expertos</p>
+                                        <a href="/curso/<%= curso.id %>" class="btn btn-sm btn-primary">
+                                            Ver Curso <i class="fas fa-arrow-right ms-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <% }); %>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-5 bg-primary text-white">
+            <div class="container text-center">
+                <h2 class="mb-3">¿Listo para aprender?</h2>
+                <p class="lead mb-4">Acceso a cursos de calidad, aprende a tu propio ritmo y obtén certificados</p>
+                <a href="/registro" class="btn btn-light btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>
+                    Registrarse Ahora Gratis
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark text-white" style="margin-top: 4rem;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3 text-white">Eduplat</h5>
+                    <p class="text-white-75 small">Tu plataforma de aprendizaje en línea para dominar nuevas
+                        habilidades.</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3 text-white">Enlaces Rápidos</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="/" class="text-decoration-none text-white">Inicio</a></li>
+                        <li class="mb-2"><a href="/temas" class="text-decoration-none text-white">Cursos</a></li>
+                        <li><a href="/contacto" class="text-decoration-none text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3 text-white">Contáctanos</h6>
+                    <p class="text-white-75 small mb-2">📧 info@eduplat.com</p>
+                    <p class="text-white-75 small">📞 +54 9 1234567890</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3 text-white">Síguenos</h6>
+                    <div class="d-flex gap-2">
+                        <a href="https://facebook.com" class="text-white" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" class="text-white" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://linkedin.com" class="text-white" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-white-50">
+            <div class="text-center text-white-75 small">
+                <p>&copy; 2025 Eduplat - Plataforma de Aprendizaje. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Service Worker — página offline -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/js/sw.js').catch(() => {});
+        }
+    </script>
+</body>
+
+</html>

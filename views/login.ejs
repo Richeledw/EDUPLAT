@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= datosLogin.titulo %> - Eduplat
+    </title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+        }
+
+        .registro-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .registro-header {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .registro-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .registro-header p {
+            margin-bottom: 0;
+            opacity: 0.9;
+        }
+
+        .registro-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            padding: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-registro {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn-registro:hover {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+        }
+
+        .registro-footer {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background-color: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .registro-footer p {
+            margin-bottom: 0;
+            color: #6b7280;
+        }
+
+        .registro-footer a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .registro-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-divider {
+            position: relative;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .social-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .social-divider span {
+            position: relative;
+            background: white;
+            padding: 0 1rem;
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .social-btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        footer {
+            background-color: rgba(31, 41, 55, 0.9);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header/Navbar -->
+    <header class="shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-md navbar-light container-fluid">
+            <div class="container-fluid px-lg-4">
+                <a class="navbar-brand fw-bold fs-4 text-primary" href="/">
+                    <i class="fas fa-book-open me-2"></i>
+                    Eduplat
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/temas">Cursos</a>
+                        </li>
+                        <% if(user) { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">Cerrar Sesión</a>
+                            </li>
+                            <% } else { %>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/registro">Registrarse</a>
+                                </li>
+                                <% } %>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/contacto">Contacto</a>
+                                    </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="registro-container">
+            <!-- Header -->
+            <div class="registro-header">
+                <i class="fas fa-sign-in-alt fa-3x mb-3"></i>
+                <h1>
+                    <%= datosLogin.titulo %>
+                </h1>
+                <p>
+                    <%= datosLogin.descripcion %>
+                </p>
+            </div>
+
+            <!-- Form Body -->
+            <div class="registro-body">
+
+                <% if(locals.error_msg && locals.error_msg.length> 0) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= error_msg %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <% } %>
+                        <% if(locals.success_msg && locals.success_msg.length> 0) { %>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <%= success_msg %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                            <% } %>
+                                <% if(locals.error && locals.error.length> 0) { %>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <%= error %>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <% } %>
+
+                                        <form action="/login" method="POST" class="needs-validation" novalidate>
+                                            <!-- Email -->
+                                            <div class="form-group">
+                                                <label for="email" class="form-label">
+                                                    <i class="fas fa-envelope me-2 text-primary"></i>Correo Electrónico
+                                                </label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    placeholder="tu@email.com" required>
+                                            </div>
+
+                                            <!-- Password -->
+                                            <div class="form-group">
+                                                <label for="password" class="form-label">
+                                                    <i class="fas fa-lock me-2 text-primary"></i>Contraseña
+                                                </label>
+                                                <input type="password" class="form-control" id="password"
+                                                    name="password" placeholder="Tu contraseña" required>
+                                            </div>
+
+                                            <!-- Button -->
+                                            <button type="submit" class="btn btn-registro mt-4">
+                                                <i class="fas fa-sign-in-alt me-2"></i>
+                                                Ingresar
+                                            </button>
+                                        </form>
+
+                                        <!-- Social Login -->
+                                        <div class="social-divider">
+                                            <span>O ingresa con</span>
+                                        </div>
+
+                                        <div class="social-buttons">
+                                            <button class="social-btn">
+                                                <i class="fab fa-google me-2"></i>Google
+                                            </button>
+                                            <button class="social-btn">
+                                                <i class="fab fa-github me-2"></i>GitHub
+                                            </button>
+                                        </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="registro-footer">
+                <p>
+                    ¿No tienes cuenta?
+                    <a href="/registro">Regístrate gratis</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3 text-white">Eduplat</h5>
+                    <p class="text-white-75 small">Tu plataforma de aprendizaje en línea para dominar nuevas
+                        habilidades.</p>
+                </div>
+                <!-- Copy of footer links -->
+            </div>
+            <hr class="bg-white-50">
+            <div class="text-center text-white-75 small">
+                <p>&copy; 2025 Eduplat. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validación del formulario
+        (function () {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+    <!-- Service Worker — página offline -->
+    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/js/sw.js').catch(()=>{});</script>
+</body>
+
+</html>

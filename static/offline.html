@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sin conexión — Eduplat</title>
+    <meta name="description" content="No hay conexión a internet. Vuelve cuando estés conectado.">
+    <style>
+        /* ── Fuentes del sistema (sin CDN) ── */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --blue:    #3b82f6;
+            --violet:  #8b5cf6;
+            --dark:    #1f2937;
+            --text:    #111827;
+            --muted:   #6b7280;
+            --border:  #e5e7eb;
+            --bg:      #f3f4f6;
+            --white:   #ffffff;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ── Fondo animado ── */
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 15% 25%,  rgba(59,130,246,0.10) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 75%,  rgba(139,92,246,0.10) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 100%, rgba(59,130,246,0.06) 0%, transparent 50%),
+                #f3f4f6;
+        }
+
+        /* Partículas flotantes decorativas */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.12;
+            pointer-events: none;
+            animation: float linear infinite;
+        }
+        .p1 { width:180px; height:180px; background:var(--blue);   top:5%;   left:8%;  animation-duration:18s; animation-delay:0s;   }
+        .p2 { width:120px; height:120px; background:var(--violet); top:60%;  right:6%; animation-duration:14s; animation-delay:-4s;  }
+        .p3 { width: 80px; height: 80px; background:var(--blue);   bottom:8%;left:30%; animation-duration:20s; animation-delay:-8s;  }
+        .p4 { width: 50px; height: 50px; background:var(--violet); top:30%;  right:25%;animation-duration:12s; animation-delay:-2s;  }
+
+        @keyframes float {
+            0%   { transform: translate(0, 0) scale(1); }
+            33%  { transform: translate(12px, -18px) scale(1.04); }
+            66%  { transform: translate(-8px,  12px) scale(0.97); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* ── Layout ── */
+        header {
+            position: relative;
+            z-index: 10;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 1.35rem;
+            font-weight: 800;
+            text-decoration: none;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Book icon SVG inline */
+        .brand-icon { width: 24px; height: 24px; flex-shrink: 0; }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--muted);
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 20px;
+            padding: 5px 14px;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #ef4444;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+        main {
+            flex: 1;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1.5rem;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow:
+                0 0 0 1px rgba(0,0,0,0.04),
+                0 20px 60px rgba(0,0,0,0.09),
+                0 6px 16px rgba(59,130,246,0.06);
+            padding: 3.5rem 3rem;
+            max-width: 560px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: card-in 0.55s cubic-bezier(0.16,1,0.3,1) both;
+        }
+
+        @keyframes card-in {
+            from { opacity:0; transform: translateY(30px) scale(0.97); }
+            to   { opacity:1; transform: translateY(0)    scale(1); }
+        }
+
+        /* tira de color arriba */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--blue), var(--violet));
+        }
+
+        /* ── Ilustración wifi off ── */
+        .wifi-illustration {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .wifi-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: var(--blue);
+            border-right-color: var(--violet);
+        }
+
+        .wifi-icon-wrap {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));
+            display: flex; align-items: center; justify-content: center;
+            animation: icon-pulse 2.8s ease-in-out infinite;
+        }
+
+        @keyframes icon-pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(139,92,246,0.15); }
+            50%      { box-shadow: 0 0 0 16px rgba(139,92,246,0); }
+        }
+
+        /* SVG wifi-off inline */
+        .wifi-svg { width: 48px; height: 48px; }
+
+        /* ── Tipografía ── */
+        .error-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--muted);
+            line-height: 1.65;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Checklist de causas ── */
+        .causes {
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem 1.4rem;
+            text-align: left;
+            margin-bottom: 2rem;
+            list-style: none;
+        }
+
+        .causes li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.875rem;
+            color: var(--muted);
+            padding: 5px 0;
+        }
+
+        .causes li + li { border-top: 1px solid var(--border); padding-top: 10px; }
+
+        .cause-icon {
+            flex-shrink: 0;
+            width: 20px; height: 20px;
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem;
+            background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.12));
+        }
+
+        /* ── Botones ── */
+        .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.72rem 1.6rem;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            color: white;
+            font-weight: 600;
+            font-size: 0.92rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139,92,246,0.35);
+            color: white;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.72rem 1.6rem;
+            background: transparent;
+            color: var(--muted);
+            font-weight: 500;
+            font-size: 0.92rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            background: rgba(59,130,246,0.04);
+            transform: translateY(-2px);
+        }
+
+        /* Spinner en botón reload */
+        .btn-primary.loading .btn-icon { animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Footer ── */
+        footer {
+            position: relative;
+            z-index: 10;
+            background: var(--dark);
+            color: rgba(255,255,255,0.55);
+            text-align: center;
+            padding: 1.4rem 1rem;
+            font-size: 0.82rem;
+        }
+
+        footer span { color: rgba(255,255,255,0.8); font-weight: 600; }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            .card { padding: 2.5rem 1.5rem; border-radius: 16px; }
+            h1 { font-size: 1.4rem; }
+            .actions { flex-direction: column; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fondo con partículas -->
+    <div class="bg-gradient"></div>
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+
+    <!-- Navbar -->
+    <header>
+        <a href="/" class="brand">
+            <!-- Book open icon (SVG inline, sin CDN) -->
+            <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="url(#grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%"   stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#8b5cf6"/>
+                    </linearGradient>
+                </defs>
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+            Eduplat
+        </a>
+
+        <div class="nav-status">
+            <div class="status-dot"></div>
+            Sin conexión
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main>
+        <div class="card">
+
+            <!-- Ícono wifi off -->
+            <div class="wifi-illustration">
+                <div class="wifi-icon-wrap">
+                    <!-- Wifi-off SVG inline -->
+                    <svg class="wifi-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <defs>
+                            <linearGradient id="wifiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%"   stop-color="#3b82f6"/>
+                                <stop offset="100%" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                        <line x1="1" y1="1" x2="23" y2="23" stroke="url(#wifiGrad)"/>
+                        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55" stroke="url(#wifiGrad)"/>
+                        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39" stroke="url(#wifiGrad)"/>
+                        <path d="M10.71 5.05A16 16 0 0 1 22.56 9" stroke="url(#wifiGrad)"/>
+                        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88" stroke="url(#wifiGrad)"/>
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0" stroke="url(#wifiGrad)"/>
+                        <circle cx="12" cy="20" r="1" fill="url(#wifiGrad)"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Etiqueta -->
+            <p class="error-label">Modo sin conexión</p>
+
+            <!-- Título -->
+            <h1>No hay conexión<br>a internet</h1>
+
+            <p class="subtitle">
+                No podemos cargar Eduplat en este momento.<br>
+                Verifica tu conexión e inténtalo de nuevo.
+            </p>
+
+            <!-- Posibles causas -->
+            <ul class="causes">
+                <li>
+                    <span class="cause-icon">📡</span>
+                    <span>Tu Wi-Fi o datos móviles pueden estar desactivados.</span>
+                </li>
+                <li>
+                    <span class="cause-icon">🔌</span>
+                    <span>El router o módem puede necesitar reiniciarse.</span>
+                </li>
+                <li>
+                    <span class="cause-icon">⚙️</span>
+                    <span>Nuestro servidor puede estar en mantenimiento momentáneo.</span>
+                </li>
+            </ul>
+
+            <!-- Botones -->
+            <div class="actions">
+                <button class="btn-primary" id="btn-retry" onclick="retryConnection()">
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+                    </svg>
+                    Reintentar
+                </button>
+                <a href="/" class="btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    Ir al Inicio
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 <span>Eduplat</span> — Plataforma de Aprendizaje. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // ── Reintento de conexión ──────────────────────────
+        function retryConnection() {
+            const btn = document.getElementById('btn-retry');
+            btn.classList.add('loading');
+            btn.textContent = ' Verificando...';
+            btn.disabled = true;
+
+            // Intenta hacer fetch a la raíz
+            fetch('/', { method: 'HEAD', cache: 'no-store' })
+                .then(() => {
+                    // Hay conexión — recarga la página
+                    window.location.reload();
+                })
+                .catch(() => {
+                    // Sigue sin conexión
+                    btn.classList.remove('loading');
+                    btn.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+                        </svg>
+                        Reintentar
+                    `;
+                    btn.disabled = false;
+
+                    // Shake animation
+                    btn.style.animation = 'shake 0.4s ease';
+                    setTimeout(() => btn.style.animation = '', 400);
+                });
+        }
+
+        // ── Auto-reintento cuando vuelve la conexión ──────
+        window.addEventListener('online', () => {
+            window.location.reload();
+        });
+
+        // ── Shake keyframe (inyectado dinámicamente) ──────
+        const style = document.createElement('style');
+        style.textContent = `@keyframes shake {
+            0%,100%{transform:translateX(0)}
+            25%{transform:translateX(-5px)}
+            75%{transform:translateX(5px)}
+        }`;
+        document.head.appendChild(style);
+    </script>
+
+</body>
+</html>
