@@ -13,6 +13,9 @@
     
     <!-- CSS personalizado -->
     <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -142,35 +145,7 @@
 </head>
 <body>
     <!-- Header/Navbar -->
-    <header class="bg-white shadow-sm sticky-top">
-        <nav class="navbar navbar-expand-md navbar-light container-fluid">
-            <div class="container-fluid px-lg-4">
-                <a class="navbar-brand fw-bold fs-4 text-primary" href="/">
-                    <i class="fas fa-book-open me-2"></i>
-                    Eduplat
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto gap-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/temas">Cursos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/contacto">Contacto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white px-3" href="/registro">Registrarse</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <%- include('partials/navbar') %>
 
     <main>
         <!-- Header Section -->

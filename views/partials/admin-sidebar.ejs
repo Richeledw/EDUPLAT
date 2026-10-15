@@ -1,0 +1,51 @@
+<!-- Sidebar de Administración EduPlat -->
+<aside class="sidebar">
+    <a class="sidebar-brand" href="/admin/dashboard">
+        <div class="brand-icon"><i class="fas fa-book-open"></i></div>
+        <div>
+            <span>Eduplat</span>
+            <small>Panel Administrador</small>
+        </div>
+    </a>
+
+    <p class="nav-section-label">Principal</p>
+    <a href="/admin/dashboard" class="nav-link <%= (locals.activeTab === 'dashboard') ? 'active' : '' %>">
+        <i class="fas fa-chart-pie"></i> Dashboard
+    </a>
+
+    <p class="nav-section-label">Gestión de Plataforma</p>
+    <a href="/admin/usuarios" class="nav-link <%= (locals.activeTab === 'usuarios') ? 'active' : '' %>">
+        <i class="fas fa-users"></i> Gestión Usuarios
+    </a>
+    <a href="/admin/cursos" class="nav-link <%= (locals.activeTab === 'cursos') ? 'active' : '' %>">
+        <i class="fas fa-graduation-cap"></i> Gestión Cursos
+    </a>
+    <a href="/admin/proyectos" class="nav-link <%= (locals.activeTab === 'proyectos') ? 'active' : '' %>">
+        <i class="fas fa-laptop-code"></i> Proyectos Prácticos
+    </a>
+
+    <p class="nav-section-label">Accesos Directos</p>
+    <a href="/temas" class="nav-link">
+        <i class="fas fa-globe"></i> Ver Catálogo
+    </a>
+    <a href="/panel" class="nav-link">
+        <i class="fas fa-user-graduate"></i> Mi Panel Estudiante
+    </a>
+
+    <div class="sidebar-footer">
+        <div class="user-info d-flex align-items-center gap-2">
+            <div style="width:36px;height:36px;background:#f5f3ff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#7c3aed;font-size:.9rem;font-weight:600;">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div style="min-width:0;">
+                <div style="font-size:.85rem;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    <%= locals.user ? user.nombre : 'Admin' %>
+                </div>
+                <div style="font-size:.74rem;color:#6b7280;">Administrador</div>
+            </div>
+        </div>
+        <a href="/logout" class="nav-link" style="color:#ef4444;">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+    </div>
+</aside>

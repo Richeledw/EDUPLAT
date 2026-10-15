@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titlePage %> - Eduplat</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; color: #1f2937; min-height: 100vh; }
+        .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e5e7eb; min-height: 100vh; padding: 1.5rem 1rem; position: fixed; top: 0; left: 0; display: flex; flex-direction: column; z-index: 100; }
+        .sidebar-brand { display: flex; align-items: center; gap: .75rem; padding: .5rem .5rem 1.25rem; border-bottom: 1px solid #f3f4f6; margin-bottom: 1.25rem; text-decoration: none; }
+        .sidebar-brand .brand-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
+        .sidebar-brand span { color: #111827; font-weight: 700; font-size: 1.15rem; }
+        .sidebar-brand small { color: #6b7280; font-size: .75rem; display: block; font-weight: 500; }
+        .nav-section-label { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #9ca3af; padding: 0 .75rem; margin: .75rem 0 .35rem; }
+        .sidebar .nav-link { display: flex; align-items: center; gap: .75rem; padding: .65rem .75rem; border-radius: 8px; color: #4b5563; font-size: .88rem; font-weight: 500; text-decoration: none; margin-bottom: .2rem; }
+        .sidebar .nav-link:hover { background: #f3f4f6; color: #1d4ed8; }
+        .sidebar .nav-link.active { background: #eff6ff; color: #2563eb; font-weight: 600; border-left: 3px solid #3b82f6; }
+        .sidebar .nav-link i { width: 18px; text-align: center; }
+        .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+        .sidebar-footer .user-info { padding: .5rem; background: #f9fafb; border-radius: 8px; margin-bottom: .5rem; }
+
+        .main-content { margin-left: 260px; padding: 2rem; min-height: 100vh; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+        .topbar h1 { font-size: 1.6rem; font-weight: 700; color: #111827; margin: 0; }
+        .breadcrumb { font-size: .85rem; color: #6b7280; margin: 0; }
+        .breadcrumb span.active { color: #2563eb; font-weight: 500; }
+
+        .course-admin-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all .2s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .course-admin-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08); }
+        .cac-header { height: 95px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; position: relative; }
+        .cac-header img { width: 50px; height: 50px; object-fit: contain; filter: brightness(0) invert(1); }
+        .cac-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+        .cac-title { font-weight: 700; color: #111827; font-size: 1.05rem; margin-bottom: .35rem; }
+        .cac-desc { color: #6b7280; font-size: .82rem; line-height: 1.45; margin-bottom: .85rem; flex: 1; }
+    </style>
+</head>
+
+<body>
+    <!-- ── SIDEBAR ── -->
+    <%- include('../partials/admin-sidebar', { activeTab: 'cursos' }) %>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="main-content">
+        <div class="topbar">
+            <div>
+                <h1><i class="fas fa-graduation-cap me-2 text-primary"></i><%= titlePage %></h1>
+                <nav class="breadcrumb mt-1">
+                    <a href="/admin/dashboard" style="color:#6b7280;text-decoration:none;">Dashboard</a>
+                    &nbsp;/&nbsp; <span class="active">Cursos Globales</span>
+                </nav>
+            </div>
+            <button class="btn btn-primary fw-semibold px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCrearCurso" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;">
+                <i class="fas fa-plus-circle me-1"></i> Crear Nuevo Curso
+            </button>
+        </div>
+
+        <!-- Flash Messages -->
+        <% if(locals.success_msg && success_msg.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-check-circle me-2"></i><%= success_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+        <% if(locals.error_msg && error_msg.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><%= error_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+
+        <!-- Grid de Cursos -->
+        <div class="row g-4">
+            <% cursos.forEach(curso => { %>
+                <div class="col-md-6 col-xl-4">
+                    <div class="course-admin-card">
+                        <div class="cac-header">
+                            <img src="<%= curso.icono %>" alt="<%= curso.titulo %>" onerror="this.src='/img/html5.svg'">
+                            <span class="badge bg-light text-dark position-absolute top-0 end-0 m-2 fw-semibold" style="font-size:0.7rem;">
+                                <%= curso.categoria.toUpperCase() %>
+                            </span>
+                        </div>
+                        <div class="cac-body">
+                            <h5 class="cac-title"><%= curso.titulo %></h5>
+                            <p class="cac-desc"><%= curso.descripcion %></p>
+                            
+                            <div class="d-flex justify-content-between text-muted small py-2 border-top border-bottom mb-3" style="font-size:0.78rem;">
+                                <span><i class="fas fa-clock me-1 text-primary"></i> <%= curso.duracion %></span>
+                                <span><i class="fas fa-layer-group me-1 text-info"></i> <%= curso.nivel %></span>
+                                <span><i class="fas fa-user-edit me-1 text-secondary"></i> <%= curso.autorNombre || 'Admin' %></span>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <a href="/admin/cursos/<%= curso.id %>/contenido" class="btn btn-sm btn-primary flex-grow-1 fw-semibold" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;">
+                                    <i class="fas fa-folder-open me-1"></i> Contenido & Recursos
+                                </a>
+                                <button class="btn btn-sm btn-outline-secondary" title="Editar información"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarCurso"
+                                        data-id="<%= curso.id %>"
+                                        data-titulo="<%= curso.titulo %>"
+                                        data-descripcion="<%= curso.descripcion %>"
+                                        data-descripcion-larga="<%= curso.descripcionLarga || '' %>"
+                                        data-categoria="<%= curso.categoria %>"
+                                        data-nivel="<%= curso.nivel %>"
+                                        data-duracion="<%= curso.duracion %>"
+                                        data-icono="<%= curso.icono %>"
+                                        data-color="<%= curso.color %>"
+                                        data-publicado="<%= curso.publicado %>"
+                                        data-proyecto-titulo="<%= curso.proyectoConsigna?.titulo || '' %>"
+                                        data-proyecto-desc="<%= curso.proyectoConsigna?.descripcion || '' %>">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <form action="/admin/cursos/<%= curso.id %>/eliminar" method="POST" onsubmit="return confirm('¿Estás seguro de quitar este curso? Se eliminarán también las matrículas asociadas.');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar curso">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+
+    <!-- Modal Crear Curso -->
+    <div class="modal fade" id="modalCrearCurso" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold text-dark"><i class="fas fa-plus-circle text-primary me-2"></i>Crear Nuevo Curso Global</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="/admin/cursos/crear" method="POST">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold text-dark">Título del Curso</label>
+                                <input type="text" name="titulo" class="form-control" placeholder="Ej: React Native para Móviles" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Slug / ID Único</label>
+                                <input type="text" name="id" class="form-control" placeholder="ej: react-native" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Categoría</label>
+                                <select name="categoria" class="form-select">
+                                    <option value="web">Desarrollo Web</option>
+                                    <option value="backend">Backend & Servidores</option>
+                                    <option value="mobile">Móvil</option>
+                                    <option value="datos">Bases de Datos</option>
+                                    <option value="diseno">Diseño UI/UX</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Nivel</label>
+                                <select name="nivel" class="form-select">
+                                    <option value="Beginner">Principiante (Beginner)</option>
+                                    <option value="Intermediate">Intermedio (Intermediate)</option>
+                                    <option value="Advanced">Avanzado (Advanced)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Duración Estimada</label>
+                                <input type="text" name="duracion" class="form-control" value="10 horas" placeholder="12 horas">
+                            </div>
+
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold text-dark">Ruta de Ícono SVG o URL</label>
+                                <input type="text" name="icono" class="form-control" value="/img/html5.svg">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Color Visual</label>
+                                <select name="color" class="form-select">
+                                    <option value="primary">Azul (Primary)</option>
+                                    <option value="success">Verde (Success)</option>
+                                    <option value="warning">Amarillo (Warning)</option>
+                                    <option value="danger">Rojo (Danger)</option>
+                                    <option value="info">Cian (Info)</option>
+                                    <option value="secondary">Púrpura (Secondary)</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-dark">Descripción Corta</label>
+                                <textarea name="descripcion" class="form-control" rows="2" placeholder="Resumen conciso para el catálogo..." required></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-dark">Descripción Detallada / Objetivos</label>
+                                <textarea name="descripcionLarga" class="form-control" rows="3" placeholder="Todo lo que aprenderá el estudiante..."></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark">Título del Proyecto Práctico del Curso</label>
+                                <input type="text" name="proyectoTitulo" class="form-control" value="Proyecto Final Práctico">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark">Consigna del Proyecto</label>
+                                <input type="text" name="proyectoDescripcion" class="form-control" placeholder="Ej: Construye una aplicación completa con...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-semibold px-4" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;">Publicar Curso</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Curso -->
+    <div class="modal fade" id="modalEditarCurso" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold text-dark"><i class="fas fa-edit text-primary me-2"></i>Editar Curso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formEditarCurso" method="POST">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold text-dark">Título del Curso</label>
+                                <input type="text" name="titulo" id="edit-titulo" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Duración</label>
+                                <input type="text" name="duracion" id="edit-duracion" class="form-control">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Categoría</label>
+                                <select name="categoria" id="edit-categoria" class="form-select">
+                                    <option value="web">Desarrollo Web</option>
+                                    <option value="backend">Backend & Servidores</option>
+                                    <option value="mobile">Móvil</option>
+                                    <option value="datos">Bases de Datos</option>
+                                    <option value="diseno">Diseño UI/UX</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Nivel</label>
+                                <select name="nivel" id="edit-nivel" class="form-select">
+                                    <option value="Beginner">Principiante</option>
+                                    <option value="Intermediate">Intermedio</option>
+                                    <option value="Advanced">Avanzado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-dark">Ícono SVG / URL</label>
+                                <input type="text" name="icono" id="edit-icono" class="form-control">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-dark">Descripción Corta</label>
+                                <textarea name="descripcion" id="edit-descripcion" class="form-control" rows="2" required></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-dark">Descripción Larga</label>
+                                <textarea name="descripcionLarga" id="edit-descripcionLarga" class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark">Título del Proyecto</label>
+                                <input type="text" name="proyectoTitulo" id="edit-proyectoTitulo" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-dark">Consigna del Proyecto</label>
+                                <input type="text" name="proyectoDescripcion" id="edit-proyectoDescripcion" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-semibold px-4" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const modalEditarCurso = document.getElementById('modalEditarCurso');
+        modalEditarCurso.addEventListener('show.bs.modal', (event) => {
+            const btn = event.relatedTarget;
+            document.getElementById('edit-titulo').value = btn.dataset.titulo;
+            document.getElementById('edit-duracion').value = btn.dataset.duracion;
+            document.getElementById('edit-categoria').value = btn.dataset.categoria;
+            document.getElementById('edit-nivel').value = btn.dataset.nivel;
+            document.getElementById('edit-icono').value = btn.dataset.icono;
+            document.getElementById('edit-descripcion').value = btn.dataset.descripcion;
+            document.getElementById('edit-descripcionLarga').value = btn.dataset.descripcionLarga;
+            document.getElementById('edit-proyectoTitulo').value = btn.dataset.proyectoTitulo;
+            document.getElementById('edit-proyectoDescripcion').value = btn.dataset.proyectoDesc;
+            document.getElementById('formEditarCurso').action = `/admin/cursos/${btn.dataset.id}/editar`;
+        });
+    </script>
+</body>
+</html>

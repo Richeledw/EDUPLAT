@@ -93,54 +93,7 @@
 
 <body>
     <!-- Header/Navbar -->
-    <header class="bg-white shadow-sm sticky-top">
-        <nav class="navbar navbar-expand-md navbar-light container-fluid">
-            <div class="container-fluid px-lg-4">
-                <a class="navbar-brand fw-bold fs-4 text-primary" href="/">
-                    <i class="fas fa-book-open me-2"></i>
-                    Eduplat
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto gap-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/temas">Cursos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/panel">Mi Panel</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/contacto">Contacto</a>
-                        </li>
-                        <% if(locals.user) { %>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user me-1"></i><%= user.nombre %>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="/panel"><i class="fas fa-tachometer-alt me-2"></i>Mi
-                                            Panel</a></li>
-                                    <li><a class="dropdown-item active" href="/configuracion"><i class="fas fa-cog me-2"></i>Configuración</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item text-danger" href="/logout"><i
-                                                class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
-                                </ul>
-                            </li>
-                            <% } %>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <%- include('partials/navbar') %>
 
     <main>
         <!-- Page Header -->

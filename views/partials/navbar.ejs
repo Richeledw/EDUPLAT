@@ -1,0 +1,117 @@
+<!-- Navbar Dinámico EduPlat con Persistencia de Sesión -->
+<header class="bg-white shadow-sm sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light container-fluid px-lg-4 py-2">
+        <a class="navbar-brand fw-bold fs-4 text-primary d-flex align-items-center gap-2" href="/">
+            <div style="width:36px;height:36px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;box-shadow:0 2px 4px rgba(59,130,246,0.3);">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <span>Eduplat</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-1">
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="/">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="/temas">Cursos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="/contacto">Contacto</a>
+                </li>
+            </ul>
+
+            <!-- Sección de Autenticación Dinámica -->
+            <div class="d-flex align-items-center gap-2">
+                <% if(locals.user) { %>
+                    <!-- USUARIO CON SESIÓN ACTIVA -->
+                    <% 
+                        let panelPath = '/panel';
+                        let panelName = 'Mi Panel';
+                        let badgeColor = 'bg-primary';
+                        let roleIcon = 'fa-user-graduate';
+
+                        if(user.rol === 'admin') {
+                            panelPath = '/admin/dashboard';
+                            panelName = 'Panel Admin';
+                            badgeColor = 'bg-dark';
+                            roleIcon = 'fa-user-shield';
+                        } else if(user.rol === 'docente') {
+                            panelPath = '/docente/dashboard';
+                            panelName = 'Panel Docente';
+                            badgeColor = 'bg-success';
+                            roleIcon = 'fa-chalkboard-teacher';
+                        }
+                    %>
+                    
+                    <a href="<%= panelPath %>" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2 px-3 py-2 fw-medium link-mi-panel">
+                        <i class="fas <%= roleIcon %>"></i>
+                        <span><%= panelName %></span>
+                    </a>
+
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2 border px-3 py-2 shadow-sm rounded-3" type="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div style="width:28px;height:28px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;">
+                                <%= user.nombre ? user.nombre.charAt(0).toUpperCase() : 'U' %>
+                            </div>
+                            <span class="fw-semibold text-dark text-truncate user-display-name" style="max-width: 140px;">
+                                <%= user.nombre %>
+                            </span>
+                            <span class="badge <%= badgeColor %> text-uppercase" style="font-size: 0.65rem;">
+                                <%= user.rol %>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border mt-2" aria-labelledby="userMenuDropdown">
+                            <li>
+                                <div class="px-3 py-2 border-bottom bg-light">
+                                    <div class="fw-bold text-dark"><%= user.nombre %></div>
+                                    <small class="text-muted"><%= user.email %></small>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="<%= panelPath %>">
+                                    <i class="fas <%= roleIcon %> text-primary"></i>
+                                    <span><%= panelName %></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="/configuracion">
+                                    <i class="fas fa-cog text-secondary"></i>
+                                    <span>Configuración</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                            <li>
+                                <a class="dropdown-item py-2 text-danger d-flex align-items-center gap-2 btn-logout" href="/logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Cerrar Sesión</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                <% } else { %>
+                    <!-- USUARIO VISITANTE (SIN SESIÓN) -->
+                    <div class="nav-auth-guest d-flex align-items-center gap-2">
+                        <a href="/login" class="btn btn-outline-primary px-3 py-2 fw-medium">
+                            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+                        </a>
+                        <a href="/registro" class="btn btn-primary px-3 py-2 fw-medium shadow-sm" style="background:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);border:none;">
+                            <i class="fas fa-user-plus me-1"></i> Registrarse
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Script para sincronizar persistencia de sesión en localStorage -->
+<script>
+    window.EDUPLAT_USER = <%- JSON.stringify(locals.user ? { id: user._id, nombre: user.nombre, email: user.email, rol: user.rol } : null) %>;
+</script>
+<script src="/js/navbar-auth.js"></script>

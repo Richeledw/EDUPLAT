@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titlePage %> - Eduplat</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Top Bar Aula ── */
+        .aula-topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.85rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand-badge {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        /* ── Video Player ── */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 14px;
+            background: #090d16;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 14px;
+        }
+
+        .player-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.85rem 1.25rem;
+            margin-top: 1rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        /* ── Tabs Content ── */
+        .aula-tabs .nav-link {
+            color: #64748b;
+            font-weight: 600;
+            padding: 0.9rem 1.25rem;
+            border: none;
+            border-bottom: 3px solid transparent;
+            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+
+        .aula-tabs .nav-link:hover {
+            color: #2563eb;
+        }
+
+        .aula-tabs .nav-link.active {
+            color: #2563eb;
+            background: transparent;
+            border-bottom-color: #2563eb;
+        }
+
+        .content-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            margin-top: 1.25rem;
+        }
+
+        /* ── Code Box ── */
+        .code-container {
+            background: #0f172a;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1.25rem 0;
+            border: 1px solid #334155;
+        }
+
+        .code-header {
+            background: #1e293b;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .code-block {
+            padding: 1.25rem;
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* ── Sidebar Lecciones ── */
+        .syllabus-sidebar {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 80px;
+            max-height: calc(100vh - 100px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .syllabus-header {
+            padding: 1.2rem 1.25rem;
+            border-bottom: 1px solid #e2e8f0;
+            background: #ffffff;
+        }
+
+        .syllabus-body {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .lesson-item {
+            padding: 0.85rem 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            text-decoration: none;
+            color: #475569;
+            font-size: 0.88rem;
+            transition: all 0.2s ease;
+        }
+
+        .lesson-item:hover {
+            background: #f8fafc;
+            color: #2563eb;
+        }
+
+        .lesson-item.active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .lesson-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .lesson-check.completed {
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .lesson-check.pending {
+            border: 2px dashed #cbd5e1;
+            color: transparent;
+        }
+
+        /* ── Resources List ── */
+        .resource-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #ffffff;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .resource-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* ── Project Workspace ── */
+        .project-consigna-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(139, 92, 246, 0.06));
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .feedback-card {
+            background: #f8fafc;
+            border-left: 4px solid #10b981;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── TOP BAR AULA VIRTUAL ── -->
+    <header class="aula-topbar">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <a href="/curso/<%= curso.id %>" class="btn btn-sm btn-outline-secondary" title="Volver a información del curso">
+                    <i class="fas fa-arrow-left me-1"></i> Volver al Curso
+                </a>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="brand-badge"><i class="fas fa-book-open"></i></div>
+                    <div>
+                        <div class="fw-bold text-dark fs-6 lh-1"><%= curso.titulo %></div>
+                        <small class="text-muted" style="font-size: 0.76rem;">
+                            <%= leccionActiva ? leccionActiva.titulo : 'Lecciones del Curso' %>
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progreso del curso -->
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-none d-md-block text-end" style="min-width: 140px;">
+                    <div class="d-flex justify-content-between" style="font-size: 0.78rem; font-weight: 600;">
+                        <span class="text-muted">Progreso:</span>
+                        <span class="text-primary" id="progressPercentDisplay"><%= porcentajeProgreso %>%</span>
+                    </div>
+                    <div class="progress mt-1" style="height: 6px; border-radius: 10px;">
+                        <div class="progress-bar bg-primary" id="progressBarDisplay" role="progressbar" style="width: <%= porcentajeProgreso %>%;" aria-valuenow="<%= porcentajeProgreso %>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <a href="/panel" class="btn btn-sm btn-light border px-3" title="Mi Panel">
+                    <i class="fas fa-user-graduate me-1 text-primary"></i> Mi Panel
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Flash Messages -->
+    <div class="container-fluid px-lg-4 mt-3">
+        <% if(locals.success_msg && success_msg.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show mb-2 shadow-sm" role="alert">
+                <i class="fas fa-check-circle me-2"></i><%= success_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+        <% if(locals.error_msg && error_msg.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show mb-2 shadow-sm" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><%= error_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- ── CONTENIDO PRINCIPAL AULA ── -->
+    <main class="container-fluid px-lg-4 py-3 flex-grow-1">
+        <div class="row g-4">
+
+            <!-- COLUMNA PRINCIPAL: PLAYER Y PESTAÑAS (8 COLS) -->
+            <div class="col-lg-8">
+                
+                <% if(leccionActiva) { %>
+                    <!-- Reproductor de Video -->
+                    <div class="video-container">
+                        <% if(leccionActiva.videoUrl && (leccionActiva.videoUrl.includes('youtube.com') || leccionActiva.videoUrl.includes('youtu.be'))) { 
+                            let embedUrl = leccionActiva.videoUrl;
+                            if (embedUrl.includes('watch?v=')) {
+                                embedUrl = embedUrl.replace('watch?v=', 'embed/');
+                            }
+                        %>
+                            <iframe src="<%= embedUrl %>" title="<%= leccionActiva.titulo %>" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <% } else if(leccionActiva.videoUrl && leccionActiva.videoUrl.endsWith('.mp4')) { %>
+                            <video controls poster="/img/banner-video.jpg">
+                                <source src="<%= leccionActiva.videoUrl %>" type="video/mp4">
+                                Tu navegador no soporta reproducción de video HTML5.
+                            </video>
+                        <% } else { %>
+                            <iframe src="<%= leccionActiva.videoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ' %>" title="<%= leccionActiva.titulo %>" allowfullscreen></iframe>
+                        <% } %>
+                    </div>
+
+                    <!-- Barra de Controles y Navegación de la Lección -->
+                    <div class="player-bar">
+                        <div>
+                            <span class="badge bg-primary bg-opacity-10 text-primary mb-1">
+                                <i class="fas fa-layer-group me-1"></i><%= leccionActiva.moduloTitulo || 'Módulo' %>
+                            </span>
+                            <h5 class="fw-bold text-dark mb-0"><%= leccionActiva.titulo %></h5>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <% const estaCompletada = leccionesCompletadas.includes(leccionActiva.id); %>
+                            <button type="button" 
+                                    class="btn btn-sm <%= estaCompletada ? 'btn-success' : 'btn-outline-success' %> fw-medium d-flex align-items-center gap-1"
+                                    id="btnCompletarLeccion"
+                                    onclick="toggleLeccionCompletada('<%= curso.id %>', '<%= leccionActiva.id %>')">
+                                <i class="fas <%= estaCompletada ? 'fa-check-circle' : 'fa-circle' %>" id="iconCheckLeccion"></i>
+                                <span id="textCheckLeccion"><%= estaCompletada ? 'Completada' : 'Marcar como Completada' %></span>
+                            </button>
+
+                            <% if(leccionAnterior) { %>
+                                <a href="/curso/<%= curso.id %>/aula/<%= leccionAnterior.id %>" class="btn btn-sm btn-outline-secondary" title="Lección anterior">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            <% } %>
+
+                            <% if(leccionSiguiente) { %>
+                                <a href="/curso/<%= curso.id %>/aula/<%= leccionSiguiente.id %>" class="btn btn-sm btn-primary" title="Siguiente lección">
+                                    Siguiente <i class="fas fa-chevron-right ms-1"></i>
+                                </a>
+                            <% } %>
+                        </div>
+                    </div>
+
+                <% } else { %>
+                    <div class="alert alert-info py-5 text-center content-card">
+                        <i class="fas fa-info-circle fs-1 text-primary mb-3"></i>
+                        <h4>Este curso aún no tiene lecciones publicadas.</h4>
+                        <p class="text-muted">El instructor está preparando el contenido didáctico.</p>
+                    </div>
+                <% } %>
+
+                <!-- ── PESTAÑAS: EXPLICACIÓN DETALLADA, RECURSOS Y PROYECTO PRÁCTICO ── -->
+                <div class="mt-4">
+                    <ul class="nav nav-tabs aula-tabs border-bottom" id="aulaTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="tab-explicacion" data-bs-toggle="tab" data-bs-target="#pills-explicacion" type="button" role="tab">
+                                <i class="fas fa-file-alt me-1 text-primary"></i> Explicación Teórica
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab-recursos" data-bs-toggle="tab" data-bs-target="#pills-recursos" type="button" role="tab">
+                                <i class="fas fa-download me-1 text-info"></i> Recursos Descargables
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab-proyecto" data-bs-toggle="tab" data-bs-target="#pills-proyecto" type="button" role="tab">
+                                <i class="fas fa-laptop-code me-1 text-warning"></i> Mi Proyecto del Curso
+                                <% if(proyecto && proyecto.estado === 'Completado') { %>
+                                    <span class="badge bg-success ms-1" style="font-size:0.65rem;">Completado</span>
+                                <% } else if(proyecto && proyecto.estado === 'En Revisión') { %>
+                                    <span class="badge bg-warning text-dark ms-1" style="font-size:0.65rem;">En Revisión</span>
+                                <% } %>
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="aulaTabContent">
+                        
+                        <!-- PESTAÑA 1: EXPLICACIÓN TEÓRICA -->
+                        <div class="tab-pane fade show active" id="pills-explicacion" role="tabpanel">
+                            <div class="content-card">
+                                <% if(leccionActiva && leccionActiva.explicacionDetallada) { %>
+                                    <div class="lh-lg text-secondary" style="font-size: 0.98rem; white-space: pre-line;">
+                                        <%= leccionActiva.explicacionDetallada %>
+                                    </div>
+                                <% } else { %>
+                                    <p class="text-muted mb-0">En esta lección cubrimos los conceptos clave del video. Asegúrate de tomar notas y practicar con los ejercicios.</p>
+                                <% } %>
+
+                                <% if(leccionActiva && leccionActiva.codigoEjemplo) { %>
+                                    <div class="mt-4">
+                                        <h6 class="fw-bold text-dark"><i class="fas fa-code text-primary me-2"></i>Código de Ejemplo Práctico</h6>
+                                        <div class="code-container">
+                                            <div class="code-header">
+                                                <span><%= leccionActiva.lenguajeCodigo || 'javascript' %></span>
+                                                <button class="btn btn-sm btn-outline-light py-0 px-2" style="font-size:0.75rem;" onclick="copiarCodigo()">
+                                                    <i class="fas fa-copy me-1"></i> Copiar
+                                                </button>
+                                            </div>
+                                            <pre class="code-block" id="blockCodeSnippet"><code><%= leccionActiva.codigoEjemplo %></code></pre>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <!-- PESTAÑA 2: RECURSOS DESCARGABLES -->
+                        <div class="tab-pane fade" id="pills-recursos" role="tabpanel">
+                            <div class="content-card">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h5 class="fw-bold text-dark mb-0">Recursos y Enlaces de Apoyo</h5>
+                                    <span class="badge bg-light text-muted border">Archivos adjuntos</span>
+                                </div>
+
+                                <!-- Recursos de la lección activa -->
+                                <% if(leccionActiva && leccionActiva.recursos && leccionActiva.recursos.length > 0) { %>
+                                    <h6 class="text-primary fw-semibold mb-2" style="font-size: 0.88rem;">Recursos específicos de esta clase:</h6>
+                                    <% leccionActiva.recursos.forEach(rec => { %>
+                                        <div class="resource-card">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div style="width:42px;height:42px;background:#eff6ff;color:#2563eb;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">
+                                                    <% if(rec.tipo === 'pdf') { %><i class="fas fa-file-pdf text-danger"></i>
+                                                    <% } else if(rec.tipo === 'github') { %><i class="fab fa-github text-dark"></i>
+                                                    <% } else if(rec.tipo === 'zip') { %><i class="fas fa-file-archive text-warning"></i>
+                                                    <% } else { %><i class="fas fa-external-link-alt text-primary"></i><% } %>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold text-dark"><%= rec.titulo %></div>
+                                                    <small class="text-muted"><%= rec.descripcion || rec.url %></small>
+                                                </div>
+                                            </div>
+                                            <a href="<%= rec.url %>" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary px-3">
+                                                Abrir / Descargar <i class="fas fa-arrow-up-right-from-square ms-1"></i>
+                                            </a>
+                                        </div>
+                                    <% }) %>
+                                <% } %>
+
+                                <!-- Recursos globales del curso -->
+                                <% if(curso.recursosGlobales && curso.recursosGlobales.length > 0) { %>
+                                    <h6 class="text-dark fw-semibold mt-4 mb-2" style="font-size: 0.88rem;">Recursos globales del curso:</h6>
+                                    <% curso.recursosGlobales.forEach(rec => { %>
+                                        <div class="resource-card">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div style="width:42px;height:42px;background:#f8fafc;color:#64748b;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;border:1px solid #e2e8f0;">
+                                                    <i class="fas fa-paperclip"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold text-dark"><%= rec.titulo %></div>
+                                                    <small class="text-muted"><%= rec.descripcion || rec.url %></small>
+                                                </div>
+                                            </div>
+                                            <a href="<%= rec.url %>" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary px-3">
+                                                Acceder <i class="fas fa-external-link-alt ms-1"></i>
+                                            </a>
+                                        </div>
+                                    <% }) %>
+                                <% } %>
+
+                                <% if((!leccionActiva || !leccionActiva.recursos || leccionActiva.recursos.length === 0) && (!curso.recursosGlobales || curso.recursosGlobales.length === 0)) { %>
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="fas fa-folder-open fs-2 mb-2"></i>
+                                        <p class="mb-0">No hay archivos adjuntos para esta lección por el momento.</p>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <!-- PESTAÑA 3: MI PROYECTO DEL CURSO (PROJECT WORKSPACE) -->
+                        <div class="tab-pane fade" id="pills-proyecto" role="tabpanel">
+                            <div class="content-card">
+
+                                <!-- Consigna del Docente -->
+                                <div class="project-consigna-box">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <h5 class="fw-bold text-dark mb-0">
+                                            <i class="fas fa-rocket text-primary me-2"></i>
+                                            <%= curso.proyectoConsigna?.titulo || 'Proyecto Práctico del Curso' %>
+                                        </h5>
+                                        <span class="badge bg-primary text-white px-2 py-1">Consigna Oficial</span>
+                                    </div>
+                                    <p class="text-secondary mb-3">
+                                        <%= curso.proyectoConsigna?.descripcion || 'Aplica las tecnologías y patrones aprendidos construyendo una solución integral.' %>
+                                    </p>
+
+                                    <% if(curso.proyectoConsigna?.requisitos && curso.proyectoConsigna.requisitos.length > 0) { %>
+                                        <div class="bg-white p-3 rounded-3 border">
+                                            <strong class="text-dark d-block mb-2" style="font-size: 0.88rem;">Criterios y Requisitos de Entrega:</strong>
+                                            <ul class="mb-0 text-muted ps-3" style="font-size: 0.88rem;">
+                                                <% curso.proyectoConsigna.requisitos.forEach(req => { %>
+                                                    <li class="mb-1"><%= req %></li>
+                                                <% }) %>
+                                            </ul>
+                                        </div>
+                                    <% } %>
+                                </div>
+
+                                <!-- Formulario de Espacio de Trabajo del Estudiante -->
+                                <h5 class="fw-bold text-dark mb-3">
+                                    <i class="fas fa-edit text-success me-2"></i>Mi Bitácora y Entregables
+                                </h5>
+
+                                <form id="formProyecto" action="/curso/<%= curso.id %>/proyecto/guardar" method="POST">
+                                    <div class="row g-3">
+                                        <div class="col-md-8">
+                                            <label class="form-label fw-semibold text-dark">Título de tu Proyecto</label>
+                                            <input type="text" name="titulo" class="form-control" value="<%= proyecto?.titulo || '' %>" placeholder="Ej: Portafolio Personal v1.0" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-semibold text-dark">Estado del Proyecto</label>
+                                            <select name="estado" class="form-select">
+                                                <option value="En Progreso" <%= proyecto?.estado === 'En Progreso' ? 'selected' : '' %>>🟡 En Progreso</option>
+                                                <option value="En Revisión" <%= proyecto?.estado === 'En Revisión' ? 'selected' : '' %>>🔵 En Revisión (Para Docente)</option>
+                                                <option value="Completado" <%= proyecto?.estado === 'Completado' ? 'selected' : '' %>>🟢 Completado</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold text-dark">
+                                                <i class="fab fa-github me-1"></i> Repositorio (GitHub, GitLab, etc.)
+                                            </label>
+                                            <input type="url" name="repositorioUrl" class="form-control" value="<%= proyecto?.repositorioUrl || '' %>" placeholder="https://github.com/usuario/mi-proyecto">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold text-dark">
+                                                <i class="fas fa-globe me-1 text-primary"></i> Despliegue en Vivo (Demo URL)
+                                            </label>
+                                            <input type="url" name="despliegueUrl" class="form-control" value="<%= proyecto?.despliegueUrl || '' %>" placeholder="https://mi-proyecto.vercel.app">
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold text-dark">Descripción General y Alcance del Proyecto</label>
+                                            <textarea name="descripcion" class="form-control" rows="3" placeholder="Describe brevemente qué hace tu proyecto, las tecnologías usadas y cómo resuelve la consigna..."><%= proyecto?.descripcion || '' %></textarea>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold text-dark">
+                                                <i class="fas fa-sticky-note me-1 text-warning"></i> Bitácora de Avances y Notas por Módulo
+                                            </label>
+                                            <textarea name="notasAvance" class="form-control" rows="4" placeholder="Registra aquí tus notas de progreso, dudas resueltas y el avance que vas logrando en cada módulo..."><%= proyecto?.notasAvance || '' %></textarea>
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-between align-items-center pt-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-clock me-1"></i> Última actualización: 
+                                                <strong><%= proyecto?.actualizadoEn ? new Date(proyecto.actualizadoEn).toLocaleString('es-CO') : 'Sin guardar' %></strong>
+                                            </small>
+
+                                            <button type="submit" class="btn btn-primary px-4 py-2 fw-semibold" style="background:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);border:none;">
+                                                <i class="fas fa-save me-1"></i> Guardar Avance del Proyecto
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- Sección de Retroalimentación de Docentes -->
+                                <hr class="my-4">
+                                <h6 class="fw-bold text-dark mb-3">
+                                    <i class="fas fa-comments text-primary me-2"></i>Retroalimentación de los Docentes / Calificación
+                                </h6>
+
+                                <% if(proyecto && proyecto.retroalimentacion && proyecto.retroalimentacion.length > 0) { %>
+                                    <% proyecto.retroalimentacion.forEach(fb => { %>
+                                        <div class="feedback-card">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <strong class="text-dark"><i class="fas fa-chalkboard-teacher me-1 text-success"></i> <%= fb.docenteNombre %></strong>
+                                                <span class="badge bg-success" style="font-size:0.75rem;">
+                                                    Calificación: <%= fb.calificacion ? fb.calificacion + '/100' : 'Revisado' %>
+                                                </span>
+                                            </div>
+                                            <p class="text-secondary mb-1" style="font-size: 0.92rem;"><%= fb.comentario %></p>
+                                            <small class="text-muted"><%= new Date(fb.fecha).toLocaleString('es-CO') %></small>
+                                        </div>
+                                    <% }) %>
+                                <% } else { %>
+                                    <div class="p-3 bg-light rounded text-center text-muted" style="font-size: 0.88rem;">
+                                        <i class="fas fa-hourglass-half me-1"></i> Tu proyecto aún no tiene retroalimentación del docente. Cambia el estado a "En Revisión" para solicitar feedback.
+                                    </div>
+                                <% } %>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COLUMNA LATERAL: ÍNDICE DE MÓDULOS Y LECCIONES (4 COLS) -->
+            <div class="col-lg-4">
+                <div class="syllabus-sidebar">
+                    <div class="syllabus-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="fw-bold text-dark mb-0">Contenido del Curso</h6>
+                            <small class="text-muted"><%= todasLasLecciones.length %> lecciones estructuradas</small>
+                        </div>
+                        <span class="badge bg-light text-primary border fw-semibold">
+                            <%= leccionesCompletadas.length %>/<%= todasLasLecciones.length %> listos
+                        </span>
+                    </div>
+
+                    <div class="syllabus-body">
+                        <% if(curso.modulos && curso.modulos.length > 0) { %>
+                            <div class="accordion accordion-flush" id="accordionModulos">
+                                <% curso.modulos.forEach((modulo, mIndex) => { %>
+                                    <div class="accordion-item border-0">
+                                        <h2 class="accordion-header" id="heading<%= mIndex %>">
+                                            <button class="accordion-button <%= mIndex === 0 ? '' : 'collapsed' %> py-3 bg-light fw-semibold text-dark" style="font-size: 0.88rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= mIndex %>">
+                                                <i class="fas fa-folder text-primary me-2"></i>
+                                                <span class="text-truncate" style="max-width: 240px;"><%= modulo.titulo %></span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapse<%= mIndex %>" class="accordion-collapse collapse <%= mIndex === 0 ? 'show' : '' %>" data-bs-parent="#accordionModulos">
+                                            <div class="accordion-body p-0">
+                                                <% if(modulo.lecciones && modulo.lecciones.length > 0) { %>
+                                                    <% modulo.lecciones.forEach(lec => { 
+                                                        const isCompleted = leccionesCompletadas.includes(lec.id);
+                                                        const isCurrent = leccionActiva && leccionActiva.id === lec.id;
+                                                    %>
+                                                        <a href="/curso/<%= curso.id %>/aula/<%= lec.id %>" class="lesson-item <%= isCurrent ? 'active' : '' %>">
+                                                            <div class="lesson-check <%= isCompleted ? 'completed' : 'pending' %>">
+                                                                <i class="fas fa-check"></i>
+                                                            </div>
+                                                            <div class="flex-grow-1 text-truncate">
+                                                                <div class="text-truncate"><%= lec.titulo %></div>
+                                                                <small class="text-muted" style="font-size:0.72rem;">
+                                                                    <i class="fas fa-play-circle me-1"></i><%= lec.duracion || '15 min' %>
+                                                                </small>
+                                                            </div>
+                                                            <% if(isCurrent) { %>
+                                                                <span class="badge bg-primary" style="font-size:0.65rem;">Actual</span>
+                                                            <% } %>
+                                                        </a>
+                                                    <% }) %>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } else { %>
+                            <div class="p-4 text-center text-muted">
+                                No hay módulos configurados para este curso.
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Función para marcar/desmarcar lección completada vía Fetch
+        async function toggleLeccionCompletada(cursoId, leccionId) {
+            try {
+                const response = await fetch(`/curso/${cursoId}/leccion/${leccionId}/completar`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    const btn = document.getElementById('btnCompletarLeccion');
+                    const icon = document.getElementById('iconCheckLeccion');
+                    const text = document.getElementById('textCheckLeccion');
+
+                    if (data.completada) {
+                        btn.className = 'btn btn-sm btn-success fw-medium d-flex align-items-center gap-1';
+                        icon.className = 'fas fa-check-circle';
+                        text.textContent = 'Completada';
+                    } else {
+                        btn.className = 'btn btn-sm btn-outline-success fw-medium d-flex align-items-center gap-1';
+                        icon.className = 'fas fa-circle';
+                        text.textContent = 'Marcar como Completada';
+                    }
+
+                    // Actualizar barra de progreso
+                    if (data.progreso !== undefined) {
+                        document.getElementById('progressPercentDisplay').textContent = data.progreso + '%';
+                        const bar = document.getElementById('progressBarDisplay');
+                        bar.style.width = data.progreso + '%';
+                        bar.setAttribute('aria-valuenow', data.progreso);
+                    }
+                }
+            } catch (err) {
+                console.error('Error al actualizar lección:', err);
+            }
+        }
+
+        // Copiar código al portapapeles
+        function copiarCodigo() {
+            const code = document.getElementById('blockCodeSnippet').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('¡Código copiado al portapapeles!');
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+            });
+        }
+
+        // Si la URL contiene el hash #proyecto o #pills-proyecto, activar la pestaña correspondiente
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash.includes('proyecto')) {
+                const triggerEl = document.querySelector('#tab-proyecto');
+                if (triggerEl) {
+                    const tab = new bootstrap.Tab(triggerEl);
+                    tab.show();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

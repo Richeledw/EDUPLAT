@@ -13,6 +13,9 @@
     
     <!-- CSS personalizado -->
     <link rel="stylesheet" href="/css/styles.css">
+    
+    <style>
+        :root {
             --color-success: #10b981;
             --color-warning: #f59e0b;
             --color-danger: #ef4444;
@@ -302,37 +305,8 @@
         }
     </style>
 </head>
-<body>
     <!-- Header/Navbar -->
-    <header class="bg-white shadow-sm sticky-top">
-        <nav class="navbar navbar-expand-md navbar-light container-fluid">
-            <div class="container-fluid px-lg-4">
-                <a class="navbar-brand fw-bold fs-4" href="/">
-                    <i class="fas fa-book-open text-primary me-2"></i>
-                    Eduplat
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto gap-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/temas">Cursos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/contacto">Contacto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white px-3" href="/registro">Registrarse</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <%- include('partials/navbar') %>
 
     <!-- Main Content -->
     <main>
@@ -439,15 +413,30 @@
                 <!-- Sidebar -->
                 <aside class="sidebar">
                     <!-- Card de Inscripción -->
-                    <div class="sidebar-card border-primary border-2">
-                        <button class="btn btn-primary w-100 mb-3">
-                            <i class="fas fa-play me-2"></i>
-                            Inscribirse al Curso
-                        </button>
-                        <button class="btn btn-outline-secondary w-100">
-                            <i class="fas fa-bookmark me-2"></i>
-                            Guardar para más tarde
-                        </button>
+                    <div class="sidebar-card border-primary border-2 shadow-sm">
+                        <% if(datosCurso.estaInscrito) { %>
+                            <div class="text-center">
+                                <span class="badge bg-success bg-opacity-10 text-success p-2 w-100 mb-2 fw-semibold">
+                                    <i class="fas fa-check-circle me-1"></i> Ya estás inscrito en este curso
+                                </span>
+                                <small class="text-muted d-block mb-1">Tu progreso actual: <strong><%= datosCurso.progresoInscripcion %>%</strong></small>
+                                <div class="progress mb-3" style="height: 6px;">
+                                    <div class="progress-bar bg-success" style="width: <%= datosCurso.progresoInscripcion %>%;"></div>
+                                </div>
+                                <a href="/curso/<%= datosCurso.id %>/aula" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm" style="background:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);border:none;">
+                                    <i class="fas fa-laptop-code me-2"></i> Ir al Aula Virtual (Course Player)
+                                </a>
+                            </div>
+                        <% } else { %>
+                            <form action="/curso/<%= datosCurso.id %>/inscribir" method="POST">
+                                <button type="submit" class="btn btn-primary w-100 mb-2 py-2 fw-semibold shadow-sm" style="background:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);border:none;">
+                                    <i class="fas fa-graduation-cap me-2"></i> Inscribirme al Curso Gratis
+                                </button>
+                            </form>
+                            <p class="text-muted small text-center mb-0" style="font-size:0.78rem;">
+                                <i class="fas fa-lock-open text-primary me-1"></i> Acceso inmediato a lecciones, videos y entregables.
+                            </p>
+                        <% } %>
                     </div>
 
                     <!-- Información del Curso -->

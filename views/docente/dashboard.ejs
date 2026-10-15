@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titlePage %> - Eduplat</title>
+    <meta name="description" content="Panel exclusivo de Docente e Instructor en Eduplat.">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; color: #1f2937; min-height: 100vh; }
+        .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e5e7eb; min-height: 100vh; padding: 1.5rem 1rem; position: fixed; top: 0; left: 0; display: flex; flex-direction: column; z-index: 100; }
+        .sidebar-brand { display: flex; align-items: center; gap: .75rem; padding: .5rem .5rem 1.25rem; border-bottom: 1px solid #f3f4f6; margin-bottom: 1.25rem; text-decoration: none; }
+        .sidebar-brand .brand-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.25); }
+        .sidebar-brand span { color: #111827; font-weight: 700; font-size: 1.15rem; }
+        .sidebar-brand small { color: #6b7280; font-size: .75rem; display: block; font-weight: 500; }
+        .nav-section-label { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #9ca3af; padding: 0 .75rem; margin: .75rem 0 .35rem; }
+        .sidebar .nav-link { display: flex; align-items: center; gap: .75rem; padding: .65rem .75rem; border-radius: 8px; color: #4b5563; font-size: .88rem; font-weight: 500; text-decoration: none; margin-bottom: .2rem; transition: all .2s ease; }
+        .sidebar .nav-link:hover { background: #f3f4f6; color: #059669; }
+        .sidebar .nav-link.active { background: #ecfdf5; color: #059669; font-weight: 600; border-left: 3px solid #10b981; }
+        .sidebar .nav-link i { width: 18px; text-align: center; }
+        .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+        .sidebar-footer .user-info { padding: .5rem; background: #f9fafb; border-radius: 8px; margin-bottom: .5rem; }
+
+        .main-content { margin-left: 260px; padding: 2rem; min-height: 100vh; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .topbar h1 { font-size: 1.6rem; font-weight: 700; color: #111827; margin: 0; }
+        .breadcrumb { font-size: .85rem; color: #6b7280; margin: 0; }
+        .breadcrumb span.active { color: #059669; font-weight: 600; }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 1.4rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: transform .2s, box-shadow .2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08); }
+        .stat-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; }
+        .stat-icon.green  { background: #ecfdf5; color: #059669; }
+        .stat-icon.blue   { background: #eff6ff; color: #2563eb; }
+        .stat-icon.violet { background: #f5f3ff; color: #7c3aed; }
+        .stat-icon.amber  { background: #fffbeb; color: #d97706; }
+
+        .stat-value { font-size: 1.85rem; font-weight: 700; color: #111827; line-height: 1.1; }
+        .stat-label { font-size: .84rem; color: #6b7280; margin-top: .2rem; font-weight: 500; }
+
+        .course-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all .2s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .course-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08); }
+        .cac-header { height: 95px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; position: relative; }
+        .cac-header img { width: 48px; height: 48px; object-fit: contain; filter: brightness(0) invert(1); }
+        .cac-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+        .cac-title { font-weight: 700; color: #111827; font-size: 1.05rem; margin-bottom: .35rem; }
+        .cac-desc { color: #6b7280; font-size: .83rem; line-height: 1.45; margin-bottom: .85rem; flex: 1; }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── SIDEBAR DOCENTE ── -->
+    <%- include('../partials/docente-sidebar', { activeTab: 'dashboard' }) %>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div>
+                <h1><i class="fas fa-chalkboard-teacher me-2 text-success"></i><%= titlePage %></h1>
+                <nav class="breadcrumb mt-1">
+                    <span>Eduplat</span> &nbsp;/&nbsp; <span class="active">Panel de Docente</span>
+                </nav>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="/docente/cursos/nuevo" class="btn btn-success fw-semibold px-3 py-2 shadow-sm" style="background:linear-gradient(135deg,#10b981,#059669);border:none;">
+                    <i class="fas fa-plus-circle me-1"></i> Publicar Nuevo Curso
+                </a>
+                <a href="/docente/proyectos" class="btn btn-outline-success fw-semibold px-3 py-2">
+                    <i class="fas fa-laptop-code me-1"></i> Revisar Proyectos
+                </a>
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        <% if(locals.success_msg && success_msg.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-check-circle me-2"></i><%= success_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+        <% if(locals.error_msg && error_msg.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><%= error_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+
+        <!-- ── Estadísticas de Docente ── -->
+        <div class="row g-3 mb-4">
+            <div class="col-sm-6 col-xl-4">
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-book-open"></i></div>
+                    <div>
+                        <div class="stat-value"><%= locals.totalCursosPropios !== undefined ? totalCursosPropios : listaCursos.length %></div>
+                        <div class="stat-label">Cursos Asignados</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fas fa-user-graduate"></i></div>
+                    <div>
+                        <div class="stat-value"><%= locals.totalEstudiantesInscritos !== undefined ? totalEstudiantesInscritos : 0 %></div>
+                        <div class="stat-label">Estudiantes Inscritos</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <div class="stat-card">
+                    <div class="stat-icon amber"><i class="fas fa-tasks"></i></div>
+                    <div>
+                        <div class="stat-value"><%= locals.totalProyectosPendientes !== undefined ? totalProyectosPendientes : 0 %></div>
+                        <div class="stat-label">Proyectos en Revisión</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Lista de Cursos del Docente ── -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold text-dark mb-0"><i class="fas fa-layer-group text-success me-2"></i>Mis Cursos Activos</h4>
+            <span class="badge bg-light text-muted border px-2 py-1"><%= listaCursos.length %> cursos</span>
+        </div>
+
+        <% if (listaCursos && listaCursos.length > 0) { %>
+            <div class="row g-4">
+                <% listaCursos.forEach(curso => { %>
+                    <div class="col-md-6 col-xl-4">
+                        <div class="course-card">
+                            <div class="cac-header">
+                                <img src="<%= curso.icono %>" alt="<%= curso.titulo %>" onerror="this.src='/img/html5.svg'">
+                                <span class="badge bg-light text-dark position-absolute top-0 end-0 m-2 fw-semibold" style="font-size:0.7rem;">
+                                    <%= (curso.categoria || 'web').toUpperCase() %>
+                                </span>
+                            </div>
+                            <div class="cac-body">
+                                <h5 class="cac-title"><%= curso.titulo %></h5>
+                                <p class="cac-desc"><%= curso.descripcion %></p>
+
+                                <div class="d-flex align-items-center justify-content-between text-muted small mb-3 pt-2 border-top">
+                                    <span><i class="fas fa-signal me-1 text-success"></i><%= curso.nivel %></span>
+                                    <span><i class="fas fa-clock me-1 text-primary"></i><%= curso.duracion %></span>
+                                    <span><i class="fas fa-list-ol me-1 text-info"></i><%= curso.modulos ? curso.modulos.length : 0 %> mód.</span>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <a href="/docente/cursos/<%= curso.id %>/contenido" class="btn btn-sm btn-primary fw-semibold" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;">
+                                        <i class="fas fa-tools me-1"></i> Constructor de Contenido
+                                    </a>
+                                    <div class="d-flex gap-2">
+                                        <a href="/docente/cursos/<%= curso.id %>/editar" class="btn btn-sm btn-outline-secondary w-50">
+                                            <i class="fas fa-edit me-1"></i> Editar
+                                        </a>
+                                        <a href="/curso/<%= curso.id %>/aula" target="_blank" class="btn btn-sm btn-outline-success w-50">
+                                            <i class="fas fa-play-circle me-1"></i> Ver Aula
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="text-center py-5 bg-white rounded-3 border p-4">
+                <i class="fas fa-book-reader fa-3x text-muted mb-3"></i>
+                <h5>No tienes cursos registrados aún</h5>
+                <p class="text-muted">Comienza publicando tu primer curso en Eduplat para compartir tus conocimientos con estudiantes.</p>
+                <a href="/docente/cursos/nuevo" class="btn btn-success fw-semibold mt-2">
+                    <i class="fas fa-plus-circle me-1"></i> Publicar Mi Primer Curso
+                </a>
+            </div>
+        <% } %>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

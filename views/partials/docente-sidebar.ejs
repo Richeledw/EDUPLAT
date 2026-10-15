@@ -1,0 +1,48 @@
+<!-- Sidebar de Docente EduPlat -->
+<aside class="sidebar">
+    <a class="sidebar-brand" href="/docente/dashboard">
+        <div class="brand-icon"><i class="fas fa-book-open"></i></div>
+        <div>
+            <span>Eduplat</span>
+            <small>Panel Docente</small>
+        </div>
+    </a>
+
+    <p class="nav-section-label">Principal</p>
+    <a href="/docente/dashboard" class="nav-link <%= (locals.activeTab === 'dashboard') ? 'active' : '' %>">
+        <i class="fas fa-chart-pie"></i> Mis Cursos
+    </a>
+    <a href="/docente/cursos/nuevo" class="nav-link <%= (locals.activeTab === 'nuevo-curso') ? 'active' : '' %>">
+        <i class="fas fa-plus-circle"></i> Publicar Curso
+    </a>
+
+    <p class="nav-section-label">Estudiantes & Feedback</p>
+    <a href="/docente/proyectos" class="nav-link <%= (locals.activeTab === 'proyectos') ? 'active' : '' %>">
+        <i class="fas fa-laptop-code"></i> Proyectos de Alumnos
+    </a>
+
+    <p class="nav-section-label">Plataforma</p>
+    <a href="/temas" class="nav-link">
+        <i class="fas fa-graduation-cap"></i> Ver Catálogo
+    </a>
+    <a href="/panel" class="nav-link">
+        <i class="fas fa-user-graduate"></i> Mi Panel Estudiante
+    </a>
+
+    <div class="sidebar-footer">
+        <div class="user-info d-flex align-items-center gap-2">
+            <div style="width:36px;height:36px;background:#ecfdf5;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#059669;font-size:.9rem;font-weight:600;">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <div style="min-width:0;">
+                <div style="font-size:.85rem;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    <%= locals.user ? user.nombre : 'Docente' %>
+                </div>
+                <div style="font-size:.74rem;color:#6b7280;">Docente</div>
+            </div>
+        </div>
+        <a href="/logout" class="nav-link" style="color:#ef4444;">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </a>
+    </div>
+</aside>

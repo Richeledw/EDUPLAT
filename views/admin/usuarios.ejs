@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titlePage %> - Eduplat</title>
+    <meta name="description" content="Gestión de usuarios de Eduplat.">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f9fafb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            min-height: 100vh;
+            padding: 1.5rem 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .5rem .5rem 1.25rem;
+            border-bottom: 1px solid #f3f4f6;
+            margin-bottom: 1.25rem;
+            text-decoration: none;
+        }
+
+        .sidebar-brand .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #ffffff;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.25);
+        }
+
+        .sidebar-brand span {
+            color: #111827;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .sidebar-brand small {
+            color: #6b7280;
+            font-size: .75rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .nav-section-label {
+            font-size: .7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #9ca3af;
+            padding: 0 .75rem;
+            margin: .75rem 0 .35rem;
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .65rem .75rem;
+            border-radius: 8px;
+            color: #4b5563;
+            font-size: .88rem;
+            font-weight: 500;
+            transition: all .2s ease;
+            text-decoration: none;
+            margin-bottom: .2rem;
+        }
+
+        .sidebar .nav-link:hover {
+            background: #f3f4f6;
+            color: #1d4ed8;
+        }
+
+        .sidebar .nav-link.active {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .sidebar .nav-link i {
+            width: 18px;
+            text-align: center;
+            font-size: .95rem;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .sidebar-footer .user-info {
+            padding: .5rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: .5rem;
+        }
+
+        /* ── Main content ── */
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* ── Topbar ── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .topbar h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
+        .topbar .breadcrumb {
+            font-size: .85rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .topbar .breadcrumb span.active {
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        .badge-rol-admin {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: #fff;
+            padding: .4rem .85rem;
+            border-radius: 20px;
+            font-size: .78rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+
+        /* ── Table Container ── */
+        .table-container {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .table-container .tc-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .table-container .tc-header h5 {
+            margin: 0;
+            font-weight: 600;
+            color: #111827;
+            font-size: 1.05rem;
+        }
+
+        .table { margin: 0; }
+        .table thead th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: .75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            border-bottom: 1px solid #e5e7eb;
+            padding: .9rem 1.25rem;
+        }
+
+        .table tbody td {
+            color: #4b5563;
+            border-bottom: 1px solid #f3f4f6;
+            padding: .95rem 1.25rem;
+            font-size: .88rem;
+        }
+
+        .table tbody tr:hover td {
+            background: #f9fafb;
+        }
+
+        /* ── Role badges ── */
+        .badge-estudiante { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: .25rem .6rem; border-radius: 20px; font-size: .75rem; font-weight: 600; }
+        .badge-docente    { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; padding: .25rem .6rem; border-radius: 20px; font-size: .75rem; font-weight: 600; }
+        .badge-admin      { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; padding: .25rem .6rem; border-radius: 20px; font-size: .75rem; font-weight: 600; }
+
+        .btn-action {
+            padding: .35rem .65rem;
+            font-size: .8rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all .2s;
+        }
+
+        /* ── Alerts ── */
+        .alert { border-radius: 10px; font-size: .9rem; }
+        .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+        .alert-danger  { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    </style>
+</head>
+
+<body>
+    <!-- ── SIDEBAR ── -->
+    <%- include('../partials/admin-sidebar', { activeTab: 'usuarios' }) %>
+
+    <!-- ── MAIN ── -->
+    <main class="main-content">
+        <div class="topbar">
+            <div>
+                <h1><i class="fas fa-users me-2 text-primary"></i><%= titlePage %></h1>
+                <nav class="breadcrumb mt-1">
+                    <a href="/admin/dashboard" style="color:#6b7280;text-decoration:none;">Dashboard</a>
+                    &nbsp;/&nbsp; <span class="active">Usuarios</span>
+                </nav>
+            </div>
+            <span class="badge-rol-admin"><i class="fas fa-shield-alt me-1"></i>Administrador</span>
+        </div>
+
+        <% if(locals.success_msg && success_msg.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-check-circle me-2"></i><%= success_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+        <% if(locals.error_msg && error_msg.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><%= error_msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+
+        <div class="table-container">
+            <div class="tc-header">
+                <div>
+                    <h5><i class="fas fa-users me-2 text-primary"></i>Usuarios Registrados (<%= usuarios.length %>)</h5>
+                    <small class="text-muted">Gestión de cuentas, activación y asignación de roles RBAC</small>
+                </div>
+                <div style="min-width: 250px;">
+                    <input type="text" id="buscadorUsuarios" class="form-control form-control-sm" placeholder="🔍 Buscar por nombre o email...">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle" id="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Rol RBAC</th>
+                            <th>Estado Cuenta</th>
+                            <th>Fecha Registro</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% usuarios.forEach((u, i) => { %>
+                        <tr class="usuario-row">
+                            <td style="color:#9ca3af;font-size:.8rem;"><%= i + 1 %></td>
+                            <td class="user-name" style="color:#111827;font-weight:600;"><%= u.nombre %></td>
+                            <td class="user-email"><%= u.email %></td>
+                            <td>
+                                <% if(u.rol === 'admin') { %>
+                                    <span class="badge-admin"><i class="fas fa-shield-alt me-1"></i>Admin</span>
+                                <% } else if(u.rol === 'docente') { %>
+                                    <span class="badge-docente"><i class="fas fa-chalkboard-teacher me-1"></i>Docente</span>
+                                <% } else { %>
+                                    <span class="badge-estudiante"><i class="fas fa-user-graduate me-1"></i>Estudiante</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if(u.activo !== false) { %>
+                                    <span class="badge bg-success bg-opacity-10 text-success fw-semibold">
+                                        <i class="fas fa-check-circle me-1"></i>Activa
+                                    </span>
+                                <% } else { %>
+                                    <span class="badge bg-danger bg-opacity-10 text-danger fw-semibold">
+                                        <i class="fas fa-ban me-1"></i>Desactivada
+                                    </span>
+                                <% } %>
+                            </td>
+                            <td><%= new Date(u.creadoEn).toLocaleDateString('es-CO') %></td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <!-- Editar Datos -->
+                                    <button class="btn btn-outline-primary btn-action"
+                                            title="Editar datos"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEditarUsuario"
+                                            data-id="<%= u._id %>"
+                                            data-nombre="<%= u.nombre %>"
+                                            data-email="<%= u.email %>"
+                                            data-rol="<%= u.rol %>">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+
+                                    <!-- Cambiar Rol -->
+                                    <button class="btn btn-outline-secondary btn-action"
+                                            title="Cambiar Rol"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalCambiarRol"
+                                            data-user-id="<%= u._id %>"
+                                            data-user-nombre="<%= u.nombre %>"
+                                            data-user-rol="<%= u.rol %>">
+                                        <i class="fas fa-user-tag"></i>
+                                    </button>
+
+                                    <!-- Activar / Desactivar -->
+                                    <form action="/admin/usuarios/<%= u._id %>/toggle-estado" method="POST" class="d-inline" onsubmit="return confirm('¿Confirmas cambiar el estado de acceso de este usuario?');">
+                                        <button type="submit" class="btn <%= u.activo !== false ? 'btn-outline-warning' : 'btn-outline-success' %> btn-action" title="<%= u.activo !== false ? 'Desactivar cuenta' : 'Activar cuenta' %>">
+                                            <i class="fas <%= u.activo !== false ? 'fa-user-slash' : 'fa-user-check' %>"></i>
+                                        </button>
+                                    </form>
+
+                                    <!-- Eliminar -->
+                                    <form action="/admin/usuarios/<%= u._id %>/eliminar" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar permanentemente a este usuario? Esta acción es irreversible.');">
+                                        <button type="submit" class="btn btn-outline-danger btn-action" title="Eliminar usuario">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Editar Usuario -->
+    <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold text-dark"><i class="fas fa-user-edit text-primary me-2"></i>Editar Datos de Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formEditarUsuario" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-dark">Nombre Completo</label>
+                            <input type="text" name="nombre" id="edit-nombre" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-dark">Correo Electrónico</label>
+                            <input type="email" name="email" id="edit-email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-dark">Rol Asignado</label>
+                            <select name="rol" id="edit-rol" class="form-select">
+                                <option value="estudiante">Estudiante (Student)</option>
+                                <option value="docente">Docente (Teacher)</option>
+                                <option value="admin">Administrador (Admin)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-semibold px-4" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cambiar Rol -->
+    <div class="modal fade" id="modalCambiarRol" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold text-dark"><i class="fas fa-exchange-alt me-2 text-primary"></i>Cambiar Rol RBAC</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formCambiarRol" method="POST">
+                    <div class="modal-body">
+                        <div class="p-3 mb-3 bg-light rounded-3 border">
+                            <span class="text-muted small d-block">Usuario seleccionado:</span>
+                            <strong class="text-dark fs-6" id="modal-user-nombre"></strong>
+                        </div>
+                        <div class="mb-2">
+                            <label for="modal-rol-select" class="form-label fw-semibold text-dark">Seleccionar nuevo rol</label>
+                            <select class="form-select" name="rol" id="modal-rol-select">
+                                <option value="estudiante">Estudiante</option>
+                                <option value="docente">Docente</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary fw-semibold" style="background:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);border:none;">Actualizar Rol</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Modal Cambiar Rol
+        const modalCambiarRol = document.getElementById('modalCambiarRol');
+        modalCambiarRol.addEventListener('show.bs.modal', (event) => {
+            const btn = event.relatedTarget;
+            document.getElementById('modal-user-nombre').textContent = btn.dataset.userNombre;
+            document.getElementById('modal-rol-select').value = btn.dataset.userRol;
+            document.getElementById('formCambiarRol').action = `/admin/usuarios/${btn.dataset.userId}/rol`;
+        });
+
+        // Modal Editar Usuario
+        const modalEditarUsuario = document.getElementById('modalEditarUsuario');
+        modalEditarUsuario.addEventListener('show.bs.modal', (event) => {
+            const btn = event.relatedTarget;
+            document.getElementById('edit-nombre').value = btn.dataset.nombre;
+            document.getElementById('edit-email').value = btn.dataset.email;
+            document.getElementById('edit-rol').value = btn.dataset.rol;
+            document.getElementById('formEditarUsuario').action = `/admin/usuarios/${btn.dataset.id}/editar`;
+        });
+
+        // Buscador interactivo en tiempo real
+        document.getElementById('buscadorUsuarios').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.usuario-row').forEach(row => {
+                const name = row.querySelector('.user-name').textContent.toLowerCase();
+                const email = row.querySelector('.user-email').textContent.toLowerCase();
+                if (name.includes(query) || email.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
